@@ -1,0 +1,12 @@
+locale|example
+# ^ The first line can define a custom delimiter (the character right after the word 'locale').
+// `#`, `//`, or `--` for single-line comments
+-- Blank lines are ignored
+
+/*
+  You can also use block comments
+
+*/
+# You can space out your translations to make them easier to read.
+# The mod automatically removes extra spaces before and after the text.
+Clean Bandage | Clean Bandage (EXAMPLE)  # inline comments are stripped too! 

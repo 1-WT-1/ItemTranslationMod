@@ -1,0 +1,7 @@
+# Item Translation Mod Settings
+# Change this to match your translation file name in the Translations folder (without .txt)
+# Example: For Translations/example.txt, put: Language=example
+Language=
+
+# Set Debug to true to print item names to the console when hovering over them
+Debug=false

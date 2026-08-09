@@ -10,3 +10,7 @@ locale|example
 # You can space out your translations to make them easier to read.
 # The mod automatically removes extra spaces before and after the text.
 Clean Bandage | Clean Bandage (EXAMPLE)  # inline comments are stripped too! 
+Consumable | Consumable (EXAMPLE)
+Regen | Regen (EXAMPLE)
+Kinetic | KINETIC (EXAMPLE)
+

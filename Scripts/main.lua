@@ -1,7 +1,16 @@
-local ModVersion = "1.0.0"
+local _print = print
+local print = function(msg)
+    _print(tostring(msg) .. "\n")
+end
+
+local ModVersion = "1.1.0"
 print(string.format("[ItemTranslationMod] v%s Initializing...", ModVersion))
 
 local ItemTranslations = {}
+local TranslationCache = {}
+local TranslationCacheSize = 0
+local MAX_CACHE_SIZE = 1000
+
 local CurrentLocale = ""
 local DebugMode = false
 
@@ -145,27 +154,116 @@ local function LoadTranslations(lang)
     end
     
     file:close()
+    
     print("[ItemTranslationMod] Successfully loaded " .. tostring(count) .. " translations from " .. filepath)
     return count
+end
+
+local function TranslateTextBlock(CurrentText)
+    if CurrentText == "" then return CurrentText end
+    
+    if TranslationCache[CurrentText] then
+        return TranslationCache[CurrentText]
+    end
+    
+    if ItemTranslations[CurrentText] then
+        if not TranslationCache[CurrentText] then
+            if TranslationCacheSize > MAX_CACHE_SIZE then
+                TranslationCache = {}
+                TranslationCacheSize = 0
+            end
+            TranslationCache[CurrentText] = ItemTranslations[CurrentText]
+            TranslationCacheSize = TranslationCacheSize + 1
+        end
+        return TranslationCache[CurrentText]
+    end
+    
+    local NewText = string.gsub(CurrentText, "([^\n]+)", function(line)
+        local leading_space, core_text, trailing_space = line:match("^(%s*)(.-)(%s*)$")
+        
+        if core_text == "" then return line end
+        
+        if ItemTranslations[core_text] then
+            return leading_space .. ItemTranslations[core_text] .. trailing_space
+        end
+        
+        local prefix, rest = core_text:match("^([%+%-]?%d+%.?%d*[x%%]?%s+)(.+)$")
+        if prefix and rest then
+            if ItemTranslations[rest] then
+                return leading_space .. prefix .. ItemTranslations[rest] .. trailing_space
+            end
+        end
+        
+        return line
+    end)
+    
+    if not TranslationCache[CurrentText] then
+        if TranslationCacheSize > MAX_CACHE_SIZE then
+            TranslationCache = {}
+            TranslationCacheSize = 0
+        end
+        TranslationCache[CurrentText] = NewText
+        TranslationCacheSize = TranslationCacheSize + 1
+    end
+    
+    return NewText
 end
 
 local function HookTooltip()
     print("[ItemTranslationMod] Attempting to register hook on SetItem...")
     RegisterHook("/Game/Classes/GUI/New/Components/ItemTooltip.ItemTooltip_C:SetItem", function(Context, Item)
         local TooltipWidget = Context:get()
+        if not TooltipWidget or not TooltipWidget:IsValid() then return end
         
-        if TooltipWidget:IsValid() and TooltipWidget.ItemName and TooltipWidget.ItemName:IsValid() then
+        if TooltipWidget.ItemName and TooltipWidget.ItemName:IsValid() then
             local CurrentName = TooltipWidget.ItemName:GetText():ToString()
-            
-            if DebugMode then
-                print("[ItemTranslationMod] Hovering item: " .. tostring(CurrentName))
-            end
-            
-            local TranslatedName = ItemTranslations[CurrentName]
-            if TranslatedName then
-                TooltipWidget.ItemName:SetText(FText(TranslatedName))
+            if CurrentName ~= "" then
                 if DebugMode then
-                    print("[ItemTranslationMod] Translated to: " .. tostring(TranslatedName))
+                    print("[ItemTranslationMod] Raw ItemName: " .. tostring(CurrentName))
+                end
+                
+                local TranslatedName = ItemTranslations[CurrentName]
+                if TranslatedName then
+                    TooltipWidget.ItemName:SetText(FText(TranslatedName))
+                    if DebugMode then
+                        print("[ItemTranslationMod] Translated ItemName: " .. tostring(TranslatedName))
+                    end
+                end
+            end
+        end
+        
+        if TooltipWidget.ItemDescription and TooltipWidget.ItemDescription:IsValid() then
+            local CurrentDesc = TooltipWidget.ItemDescription:GetText():ToString()
+            if CurrentDesc ~= "" then
+                if DebugMode then
+                    print("[ItemTranslationMod] Raw ItemDescription: " .. string.gsub(CurrentDesc, "\n", "\\n"))
+                end
+                
+                local NewDesc = TranslateTextBlock(CurrentDesc)
+                
+                if NewDesc ~= CurrentDesc then
+                    TooltipWidget.ItemDescription:SetText(FText(NewDesc))
+                    if DebugMode then
+                        print("[ItemTranslationMod] Translated Description: " .. string.gsub(NewDesc, "\n", "\\n"))
+                    end
+                end
+            end
+        end
+        
+        if TooltipWidget.ResistanceList and TooltipWidget.ResistanceList:IsValid() then
+            local CurrentRes = TooltipWidget.ResistanceList:GetText():ToString()
+            if CurrentRes ~= "" then
+                if DebugMode then
+                    print("[ItemTranslationMod] Raw ResistanceList: " .. string.gsub(CurrentRes, "\n", "\\n"))
+                end
+                
+                local NewRes = TranslateTextBlock(CurrentRes)
+                
+                if NewRes ~= CurrentRes then
+                    TooltipWidget.ResistanceList:SetText(FText(NewRes))
+                    if DebugMode then
+                        print("[ItemTranslationMod] Translated ResistanceList: " .. string.gsub(NewRes, "\n", "\\n"))
+                    end
                 end
             end
         end

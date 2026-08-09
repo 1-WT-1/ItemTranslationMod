@@ -3,7 +3,7 @@ local print = function(msg)
     _print(tostring(msg) .. "\n")
 end
 
-local ModVersion = "1.1.0"
+local ModVersion = "1.1.1"
 print(string.format("[ItemTranslationMod] v%s Initializing...", ModVersion))
 
 local ItemTranslations = {}

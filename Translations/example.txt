@@ -9,8 +9,672 @@ locale|example
 */
 # You can space out your translations to make them easier to read.
 # The mod automatically removes extra spaces before and after the text.
-Clean Bandage | Clean Bandage (EXAMPLE)  # inline comments are stripped too! 
+
+--Misc Text
 Consumable | Consumable (EXAMPLE)
 Regen | Regen (EXAMPLE)
 Kinetic | KINETIC (EXAMPLE)
 
+#List of items in the game v0.4.5 (public-test) by Tea-Loving Lad
+
+--Medical Items
+Large Med-Kit | Name of Translated Item Here (EXAMPLE)  # inline comments like these won't cause issues!
+Gauze Pack | 
+Medical Paste | 
+Homunculus Eye | 
+Dirty Bandage | 
+Clean Bandage | 
+Stim Pills | 
+Laudanum | 
+Homebrew Medicine | 
+Antibiotics | 
+
+--Food/Drink Items
+Whisky | 
+Pork Ribs | 
+Leftovers | 
+Canned Beef | 
+Canned Beans | 
+Venison | 
+Canned Peaches | 
+Canned Soup | 
+Reclaimed Sausage | 
+Frog | 
+Live Cricket | 
+Candied Tuna | 
+Dog Meat | 
+Clyde's Honey Egg | 
+Not Venison | 
+Rancid Meat | 
+Milk Bites | 
+M.R.E. | 
+Brown Mushroom | 
+Dead Beetle | 
+Gold Mushroom | 
+Perfume Bottle | 
+Paladin Brandy | 
+Red Mushroom | 
+
+--Artifact Items
+Refined Living Bronze | 
+Refined Nano-Gold Prism | 
+Refined Red Torus | 
+Refined Jade Pillar | 
+Refined Hardlight | 
+Prototype Drill Head | 
+Blue Mushroom | 
+Rhinojelly Flume | 
+Glow-Sprout | 
+Fruiting Star Dust | 
+Star Dust | 
+Mother Doll | 
+Stop Watch | 
+Skeleton Key | 
+Dog Whistle | 
+Regression Matrix | 
+Lodestone | 
+Bronze Heart | 
+Lightning Rod | 
+Gilded Vertebra | 
+Hyper-Static Block | 
+Stun Totem | 
+Crucible | 
+Corvo Skull | 
+Voltaic Spire | 
+Glass Heart | 
+Clump of Hardlight | 
+Familiar Totem | 
+Friend Maker Wand | 
+Ferrous Tumor | 
+Slim Fish | 
+Meteor | 
+Dragon Spine | 
+Luftballon | 
+Resistor | 
+Hard Shell | 
+Failed Conduit | 
+Hardy Glob | 
+Fire Starter | 
+Caustic Wardstone | 
+Greedy Hand | 
+Anti-Toxin Pollyp | 
+Arc Wardstone | 
+Dandelion | 
+Stelarite Scapula | 
+Amber Manifold | 
+Wraith Core | 
+Incendiary Wardstone | 
+Singularity Bomb | 
+Urchin | 
+Fatty Lymphatic Cell | 
+Golden Tesseract | 
+Glowing Lab Sample | 
+Charismatic Gem | 
+Glow Worm | 
+Purple Tesseract | 
+Whispering Worm Familiar | 
+Pale Bone | 
+Evil Eye Ring | 
+Green Tesseract | 
+Blue Tesseract | 
+Red Tesseract | 
+Red Coin | 
+Red Root Sample | 
+Small Package | 
+Sample XR-922 | 
+Sample KR-448 | 
+Sample BA-324 | 
+Sample MT-651 | 
+Sample EJ-501 | 
+The Black Stone | 
+
+--Ammo Items
+9mm Parabellum | 
+9mm AP | 
+9mm Vampire Rounds | 
+.45 Cal HollowPoint | 
+.45 Cal RPC | 
+.45 Cal Micro-Frag | 
+.45 Cal Air-Bursters | 
+5.56 Intermediate FMJ | 
+5.56 Intermediate AP | 
+5.56 Intermediate Incendiary | 
+5.56 Stunner Rounds | 
+30-06 FMJ Rifle | 
+30-06 Tandem | 
+30-06 Incendiary | 
+30-06 HE | 
+30-06 Tracer | 
+12-Gauge Buckshot | 
+12-Gauge Slug | 
+12-Gauge Dragon's Breath | 
+12-Gauge DSAPI | 
+12-Gauge Frag-12 | 
+12-Gauge Hyper-Ball | 
+.338 Magnum FMJ | 
+.338 Magnum AP | 
+.338 Magnum Frag | 
+.338 Magnum Omni-Penetrator | 
+50 Cal FMJ | 
+50 Cal HEIAP | 
+40mm Lightning Grenade |  # unused
+40mm Flare Grenade | 
+40mm Gas Grenade | 
+40mm HE Grenade | 
+40mm Buckshot | 
+40mm Thermobaric Grenade | 
+60mm Fragmentation Rocket | 
+60mm Thermobaric Rocket | 
+60mm HEAT Rocket | 
+60mm Cluster Rocket | 
+Coil Bolt | 
+5.7 Hollow Point | 
+5.7 AP | 
+5.7 Incendiary | 
+.338 Magnum Ammo Kit | 
+12-Gauge Shotgun Ammo Kit | 
+30-06 Rifle Ammo Kit | 
+45 Cal Ammo Kit | 
+5.56 Inter Rifle Ammo Kit | 
+9mm Pistol Ammo Kit | 
+
+--Utility/Throwable/Tool Items
+Arc Grenade | 
+Flash-Bang Grenade | 
+EMP Device | 
+Frag Grenade | 
+HE Grenade | 
+Fragmentation IED | 
+Thermobaric IED | 
+Land Mine | 
+Molotov Cocktail | 
+Pipe Bomb | 
+Smoke Grenade |  # unused
+Eather Canister | 
+Small Eather Cell | 
+Binoculars | 
+Blowtorch | 
+Blue Signal Flare | 
+Yellow Signal Flare | 
+Red Flare | 
+Bolt | 
+Camera | 
+Compass | 
+Eather-Flux Detector | 
+Eather-Flux Scanner | 
+FlashLight | 
+Heavy Flashlight | 
+Heavy Lock Pick | 
+Lighter | 
+Lock Pick | 
+Medical Bag | 
+Oxygen Tank | 
+Shortwave Radio | 
+Spray Paint | 
+
+--Weapon Items
+60mm Recoilless Rifle | 
+TS-KWP 41-C | 
+Type 04 Grenade Launcher | 
+Type 41 60mm RLS | 
+Blast Cannon | 
+Coil Gun | 
+Upgraded Coil Gun | 
+K-94 M.A.W. | 
+Pulse Rifle | 
+PC-09 Pilum | 
+Scorcher | 
+Plasma Repeater | 
+Trident | 
+Plasma Pistol | 
+Seeker Rifle | 
+Type 200 Pulse Rifle | 
+Kruger Auto-50 | 
+Kruger 50-B | 
+Anti-Mat Rifle | 
+Break-Action .50 Anti-Mat | 
+Type 93F MCR | 
+Type 93 CSR | 
+SR 78 Black Mamba | 
+Type 93 Rifle | 
+Assassin Rifle | 
+SR 78 HCS | 
+SR 78 | 
+SR 78 Short-Barrel | 
+SR 78 Sentry | 
+Templar Rifle | 
+Cut Down .338 | 
+Basilisk | 
+Agis Auto-SG Custom | 
+Agis Auto-SG 700 | 
+SG 71 'Chimera' | 
+Bendell 8 Compact | 
+SG 71-B Custom | 
+SG 71-A Suppressed | 
+Bendell 8 Shotgun | 
+SG 71-A | 
+The Multi-Tool | 
+Disciple Shotgun | 
+Type 04 Army Shotgun | 
+Type 04-C Short-Barrel Shotgun | 
+Scoped Break-Action Shotgun | 
+Type 04 Shotgun | 
+Suppressed Bolt-Action Shotgun | 
+Break-Action Shotgun | 
+Bolt-Action Shotgun | 
+Sawn-Off Shotgun | 
+ma'ii Musket | 
+Vortex Rifle | 
+TR 77-C SAW | 
+TR 77 Black Mamba | 
+Type 33 SAR | 
+PK-58B Night Shark | 
+R-100 Night-Watch | 
+TR 77-B Loki | 
+Type 33 Ranger | 
+PK-46 Grenadier | 
+PK-58C Tac BR | 
+R-100 LMG | 
+Scoped Type 33 Rifle | 
+TR 77-F HCR | 
+Venator 900 | 
+Scoped RH-55 Battle Rifle | 
+Tactical TKS 43 | 
+RH-55 Stubb | 
+Custom RH-55 Battle Rifle | 
+Long Barrel Venator 900 | 
+TR 77 HCR Custom | 
+PK-58B Battle Rifle | 
+Suppressed BR-61 DMR | 
+PK-46 Custom | 
+BR-61 Reaper | 
+Type 33 Shorty | 
+Type 33 Rifle | 
+Scoped BR-61 Battle Rifle | 
+Scoped TKS 43 | 
+Ordinal Rifle | 
+BR-61C Compact Rifle | 
+Cut Down Venator 900 | 
+TR 77 HCR | 
+PK-46 HAR | 
+RH-55 Battle Rifle | 
+BR-61 DMR | 
+TKS 43 | 
+Suppressed Bolt-Action Rifle | 
+BR-61 Battle Rifle | 
+Bolt-Action Sniper Rifle | 
+Bolt-Action Rifle | 
+Cut-Down Rifle | 
+Special Utility E-LAC | 
+Fumigator | 
+Dyrnwyn | 
+626 Death Adder | 
+M-77D LSAW | 
+Tactical 626 T-AR | 
+Tactical Chiron 61 AR | 
+KRM 54 Loki | 
+626 T-AR | 
+M-TR14 Tactical Carbine | 
+DRAK-V 57 Revenant | 
+Scoped Chiron 61 AR | 
+Scoped M-77 LAC | 
+Type 18-C Specter | 
+M-77 Army LAC | 
+M-TR14 Long-Barrel | 
+Type 18-G Assault Rifle | 
+KRM 54 Night-Hawk | 
+Chiron 61 AR | 
+KRM 54 Guerrilla | 
+Tac DRAK-V 57 | 
+Type 18 CQC | 
+M-TR14 Assault Carbine | 
+Cobra 81 | 
+Cobra 53 | 
+Acolyte Rifle | 
+Type 18 Combat AR | 
+Cobra 53-B | 
+Type 52 IAR | 
+DRAK-V 57 | 
+Type 18-M AR | 
+M-77 LAC | 
+KRM 54 | 
+DRAK-A 57 | 
+Tac PKT-55B | 
+M-TR14 Carbine | 
+Type 18 Assault Rifle | 
+PKT-55 Carbine | 
+Scoped PKT-52 Scout Rifle | 
+Cobra 52 | 
+DRAK-V 57 U | 
+PKT-52 Scout Rifle | 
+Chiron 84 Compact | 
+Flail of Osiris | 
+Mjolnir | 
+Tac H-SMG 45 | 
+KAP 77 Reflex | 
+45 HMP Long-Barrel | 
+KAP 77 | 
+Custom H-SMG 45 | 
+45 HMP Custom | 
+45 HMP | 
+Model 1927 Custom | 
+H-SMG 45 | 
+Jackal 45 Carbine | 
+Scoped 45 Carbine | 
+Scoped KTR 04 | 
+Tactical .45 Lever-Action | 
+KTR 04 | 
+Model 1927 SMG | 
+Apostle Carbine | 
+45 Carbine | 
+Scoped Revolver Carbine | 
+Scoped .45 Lever-Action | 
+Riktor Revolver Carbine | 
+.45 Lever-Action | 
+M 1913 Spit-Fire | 
+Tac 45 Auto-Mag | 
+45 Auto-Mag | 
+M 1913 | 
+Riktor 45 Custom | 
+Riktor 45 Magnum | 
+BullDog Revolver | 
+Snub-Nose Revolver | 
+Turbo Coil | 
+Holda's Needle | 
+Type 15-HL | 
+Type 15 Tactical SMG | 
+Type 15-B Security SMG | 
+Custom A-MP 64 | 
+A-MP 64 CQC | 
+Tunnel Rat | 
+Scoped 9mm Carbine | 
+Vampire Hunter |  # unused
+A-MP 64 | 
+9mm Carbine | 
+Type 15 SMG | 
+MP-8 Guard | 
+MP-8 | 
+4-54 PDW | 
+901 Automatic | 
+Model 1931 Carbine | 
+Tactical Type 12 Pistol | 
+4-54 Automatic | 
+Suppressed PKP-11 Pistol | 
+Model 1931 | 
+Type 12 Custom | 
+Little Assassin | 
+Type 12 Pistol | 
+Type 24 Automatic |  # unused?
+PKP-11 Pistol | 
+9mm Revolver | 
+Rusty Old Pistol | 
+Type 21 Tactical | 
+PDW 900 | 
+Custom Type 21 Rifle | 
+GPG 451 | 
+PK 79-U | 
+5.7 Carbine | 
+Type 21 Infantry Rifle | 
+Black Fox | 
+Fennec 5.7 | 
+
+
+--Melee Weapon Items
+Fire Axe | 
+Hatchet | 
+Sledge Hammer | 
+Spade | 
+Riot Shield | 
+Field Manipulator |  # unused
+Rondel Knife | 
+Saber | 
+Bayonet | 
+Machete | 
+Combat Knife | 
+Crowbar | 
+Heavy Pipe | 
+Stun Baton | 
+Pipe Wrench | 
+Utility Knife | 
+Pitchfork | 
+Old Pipe | 
+Pine-Ball Bat | 
+
+
+--Headgear Items
+SpecOps Helm | 
+EVA Helm | 
+Revenant Helm | 
+Forest Demon | 
+White Fox Helm | 
+Daemon Mask | 
+Tactical Night-Ops | 
+HazOp Trooper Helm | 
+Winter Trooper Helm | 
+Tactical Face-Shield | 
+Scav Helm | 
+Stalker Ace | 
+Ballistic Helmet | 
+Cultist Pro Mask | 
+Combat Officer Helm | 
+Standard Infantry Helm | 
+Cult Gas Mask | 
+Tac Rebreather Mask | 
+HazOp Mask | 
+Field Specialist Helm | 
+Night Vision Goggles | 
+Tac HeadSet | 
+Trench Runner Helm | 
+Cult Shroud | 
+Ballistic Mask | 
+Demolitionist Helm | 
+Insurrection Officer Cap | 
+Scouter | 
+Riot Control Helm | 
+Looter Mask | 
+Old Gas Mask | 
+Cult Mask | 
+Basic Helm | 
+Tac Light | 
+Dust Filter | 
+Simple Shroud | 
+Face Mask | 
+Goggles | 
+Hunter's Cap | 
+Army Cap | 
+Shark Hat | 
+Fur Cap | 
+Beret | 
+Ushanka | 
+Paper Crown | 
+Fancy Hat | 
+White Impala | 
+
+--Outfits Items
+Juggernaut Power Armor | 
+Super Heavy Armor | 
+Stalker Pro | 
+Strider | 
+Heavy Plate Armor | 
+Infantry Standard | 
+Rebel Medium Plate Armor | 
+Medium Plate Armor | 
+HazOp Gear | 
+NFTA Standard Infantry | 
+Molle Heavy Rig | 
+Cultist Pro | 
+Riot Vest | 
+Contractor Vest | 
+Militia Light | 
+Composite Vest | 
+Cultist Medium Plate | 
+State Artificer | 
+Stalker Rags |  # unused
+Light Pouch Vest | 
+Cultist Insulated Jacket | 
+Cultist Jacket | 
+Cat Suit | 
+Insulated Jacket | 
+Hazard Suit | 
+Conscript Uniform | 
+Bandit Jacket | 
+Old Fatigues | 
+Rebel Fatigues | 
+Tech Rig | 
+Heavy Coat | 
+Hunter's Jacket | 
+Bomber Jacket | 
+Insurrectionist Jacket | 
+Expedition Light | 
+Insurrection Officer's Coat | 
+Field Research Coat | 
+
+
+--Document/Note/Book Items
+$3Mil Debt Receipt |  # unused?
+Arcana Angelica | 
+Arcana VII - XII | 
+Arcana XIII - XVIII | 
+Arcana XIX - XXIV | 
+Bank Ledger | 
+Bill of Debt | 
+Bixby's Note | 
+Black Market Flyer | 
+Courier's Journal | 
+Dangerous Fae of The Zone | 
+Dead End Report | 
+Debt Receipt | 
+Depot Documents | 
+Dr. Quinn's Note | 
+Drill Worker's Journal | 
+Eather Drill Manual | 
+Eather Reification Pattern Manifest | 
+Farm House Note | 
+Forbidden Verses I | 
+Forbidden Verses II | 
+Forbidden Verses III | 
+Forbidden Verses IV | 
+Fort Memo | 
+Fresh Epoch Vol 1 | 
+Infrastructure Records | 
+Insurrection Orders | 
+Lenny's Journal | 
+Manifesto of Ruin: Vol 1 | 
+Manifesto of Ruin: Vol 2 | 
+Manifesto of Ruin: Vol 3 | 
+Mission Case File | 
+News Paper |  # unused
+NFTA Field Report: 'Flayers' | 
+NFTA Sea Chart | 
+Note from Ray | 
+Office Documents | 
+Records Office Notice | 
+Return the Earth Chp1 | 
+Return the Earth Chp2 | 
+Revolutionary Army: Orders | 
+Sawmill Note | 
+Spratt's Note | 
+Strange Child's Drawing | 
+Test Drill Memo | 
+The Arrival of the Fae | 
+The Hunter and the Four Stags | 
+
+--Data Tape Items
+Blank Data Tape | 
+Annex Telemetry Data Tape | 
+F-COM LX-0977 Tape | 
+Fort Leto PSA | 
+Ground Saturation Data | 
+Lab E206 Data Tape | 
+M35 Radio Transmission Tape | 
+Micro-Drill Data | 
+Telemetry Data | 
+UT 308 Data | 
+
+
+--Key/Keycard Items
+Attic Lab Key | 
+Bank Master Key | 
+Blue House Key | 
+Depot Employee ID Card | 
+Farm House Key | 
+Hidden Apartment Key | 
+Key No. 002 | 
+Key No. 04 | 
+Key No. 06 | 
+Key No. 230 | 
+Key No. 30 | 
+Key No. 4513 | 
+Key No. 543 | 
+Lab E-206 Key Card | 
+Lab PD-002 Key Card | 
+Manor Key | 
+Modern NFTA Key Card | 
+Old Iron Key | 
+Old NFTA Key Card | 
+RG East Key Card | 
+Saloon Bedroom Key | 
+Savlo Key Card | 
+Savlo Manor Key | 
+Saw Mill Key | 
+South Bend Key | 
+The Broker's Key | 
+Warehouse Office Key | 
+Yard Master Key | 
+
+
+--Miscellaneous Items
+Can of Molasses | 
+Cash | 
+Couple of Bills | 
+Small Stack of Cash | 
+Large Stack of Cash | 
+Massive Pile of Cash | 
+CERT Key | 
+Coil Gun Blueprints | 
+Cut-Down Rifle Blueprints | 
+EMP Device Blueprints | 
+Fragmentation IED Blueprints | 
+Homebrew Medicine Blueprints | 
+Shortwave Radio Blueprints | 
+Stun Baton Blueprints | 
+Duffle Bag | 
+Heavy Duffle Bag | 
+Large Package | 
+Lost Duffle Bag | 
+Metal Briefcase | 
+Old Teddy Bear | 
+Requisition Form | 
+Small Gas Mask | 
+Small Package | 
+Stolen Duffle Bag | 
+Tarot Cards | 
+Thermometer | 
+Toilet Paper | 
+Tool Kit | 
+Eather Pattern Cartridge | 
+Gold Bar | 
+Diamond Ring | 
+Gold Cat | 
+Turbo Pump | 
+Gold Ingot | 
+Gold Candelabrum | 
+Telemetry Module | 
+Pocket Watch | 
+Sulfates | 
+Radio Transceiver | 
+Phosphates | 
+Eather Resin | 
+Computer Board | 
+Jewelry | 
+Copper Wire | 
+Hesh Egg | 
+Toy Robot | 
+Film Pack | 
+Spark Plug | 
+Gold Nugget | 
+Scrap Electronics | 
+Ink Pack | 
+Silverware | 
+Gold Coin | 
+Dog Tags | 

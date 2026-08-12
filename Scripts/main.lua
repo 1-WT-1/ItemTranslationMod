@@ -3,7 +3,7 @@ local print = function(msg)
     _print(tostring(msg) .. "\n")
 end
 
-local ModVersion = "1.1.1"
+local ModVersion = "1.1.2"
 print(string.format("[ItemTranslationMod] v%s Initializing...", ModVersion))
 
 local ItemTranslations = {}
@@ -191,6 +191,20 @@ local function TranslateTextBlock(CurrentText)
         if prefix and rest then
             if ItemTranslations[rest] then
                 return leading_space .. prefix .. ItemTranslations[rest] .. trailing_space
+            end
+        end
+        
+        -- TIP:
+        local word_prefix, spaces, word_rest = core_text:match("^([^:]+:)(%s+)(.+)$")
+        if word_prefix and spaces and word_rest then
+            local translated_prefix = ItemTranslations[word_prefix]
+            if translated_prefix then
+                local translated_rest = ItemTranslations[word_rest] or word_rest
+                if translated_prefix == "" then
+                    return leading_space .. translated_rest .. trailing_space
+                else
+                    return leading_space .. translated_prefix .. spaces .. translated_rest .. trailing_space
+                end
             end
         end
         

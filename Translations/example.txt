@@ -14,8 +14,9 @@ locale|example
 Consumable | Consumable (EXAMPLE)
 Regen | Regen (EXAMPLE)
 Kinetic | KINETIC (EXAMPLE)
+TIP: | TIP(EXAMPLE):
 
-#List of items in the game v0.4.5 (public-test) by Tea-Loving Lad
+#List of items in the game v0.4.5 (public-test) by Tea- Loving Lad
 
 --Medical Items
 Large Med-Kit | Name of Translated Item Here (EXAMPLE)  # inline comments like these won't cause issues!

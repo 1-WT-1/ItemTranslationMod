@@ -3,7 +3,7 @@ local print = function(msg)
     _print(tostring(msg) .. "\n")
 end
 
-local ModVersion = "1.2.0"
+local ModVersion = "1.2.1"
 print(string.format("[ItemTranslationMod] v%s Initializing...", ModVersion))
 
 local ItemTranslations = {}
@@ -11,6 +11,7 @@ local SearchReplacements = {}
 local TranslationCache = {}
 local TranslationCacheSize = 0
 local MAX_CACHE_SIZE = 1000
+local SearchStringCache = {}
 
 local CurrentLocale = ""
 local DebugMode = false
@@ -100,6 +101,8 @@ local function LoadTranslations(lang)
         return 0
     end
 
+    ItemTranslations = {}
+    SearchReplacements = {}
     local count = 0
     local delimiter = "|"
     local isFirstLine = true
@@ -155,6 +158,7 @@ local function LoadTranslations(lang)
                     if key and value and key ~= "" then
                         ItemTranslations[key] = value
                         table.insert(SearchReplacements, { 
+                            raw_eng = key,
                             eng = key:gsub("[%^%$%(%)%%%.%[%]%*%+%-%?]", "%%%1"), 
                             loc = value 
                         })
@@ -166,6 +170,10 @@ local function LoadTranslations(lang)
     end
     
     file:close()
+
+    table.sort(SearchReplacements, function(a, b)
+        return #a.raw_eng > #b.raw_eng
+    end)
     
     print("[ItemTranslationMod] Successfully loaded " .. tostring(count) .. " translations from " .. filepath)
     return count
@@ -379,15 +387,23 @@ local function HookItemCardSearch()
                 print("[ItemTranslationMod] ItemCard PrepSearchString Fired. Raw: " .. string.gsub(OriginalSearchString, "\n", "\\n"))
             end
             if OriginalSearchString ~= "" then
-                local TranslatedSearch = OriginalSearchString
-                for i = 1, #SearchReplacements do
-                    TranslatedSearch = TranslatedSearch:gsub(SearchReplacements[i].eng, SearchReplacements[i].loc)
+                local TranslatedSearch = SearchStringCache[OriginalSearchString]
+                if not TranslatedSearch then
+                    TranslatedSearch = OriginalSearchString
+                    for i = 1, #SearchReplacements do
+                        TranslatedSearch = TranslatedSearch:gsub(SearchReplacements[i].eng, SearchReplacements[i].loc)
+                    end
+                    SearchStringCache[OriginalSearchString] = TranslatedSearch
                 end
                 
                 if TranslatedSearch ~= OriginalSearchString then
                     local NewSearchString = TranslatedSearch
                     if SearchLanguage == "both" then
                         NewSearchString = OriginalSearchString .. "\n" .. TranslatedSearch
+                    end
+                    
+                    if DebugMode then
+                        print("[ItemTranslationMod] SearchString successfully translated to:\n" .. string.gsub(TranslatedSearch, "\n", "\\n"))
                     end
                     
                     local success, err = pcall(function()

@@ -282,26 +282,86 @@ local function HookTooltip()
             end
         end
     end)
-    print("[ItemTranslationMod] Hook registered successfully!")
+    print("[ItemTranslationMod] ItemTooltip hook registered successfully!")
+end
+
+local function HookInspectScreen()
+    print("[ItemTranslationMod] Attempting to register hook on InspectItemScreen_C:Construct...")
+    RegisterHook("/Game/Classes/GUI/New/InspectItemScreen.InspectItemScreen_C:Construct", function(Context)
+        local InspectWidget = Context:get()
+        if not InspectWidget or not InspectWidget:IsValid() then return end
+        
+        if InspectWidget.TextBlock_ItemName and InspectWidget.TextBlock_ItemName:IsValid() then
+            local CurrentName = InspectWidget.TextBlock_ItemName:GetText():ToString()
+            if CurrentName ~= "" then
+                if DebugMode then
+                    print("[ItemTranslationMod] Inspect Screen - Raw ItemName: " .. tostring(CurrentName))
+                end
+                
+                local TranslatedName = ItemTranslations[CurrentName]
+                if TranslatedName then
+                    InspectWidget.TextBlock_ItemName:SetText(FText(TranslatedName))
+                    if DebugMode then
+                        print("[ItemTranslationMod] Inspect Screen - Translated ItemName: " .. tostring(TranslatedName))
+                    end
+                end
+            end
+        end
+        
+        if InspectWidget.TextBlock_Description and InspectWidget.TextBlock_Description:IsValid() then
+            local CurrentDesc = InspectWidget.TextBlock_Description:GetText():ToString()
+            if CurrentDesc ~= "" then
+                if DebugMode then
+                    print("[ItemTranslationMod] Inspect Screen - Raw ItemDescription: " .. string.gsub(CurrentDesc, "\n", "\\n"))
+                end
+                
+                local NewDesc = TranslateTextBlock(CurrentDesc)
+                
+                if NewDesc ~= CurrentDesc then
+                    InspectWidget.TextBlock_Description:SetText(FText(NewDesc))
+                    if DebugMode then
+                        print("[ItemTranslationMod] Inspect Screen - Translated Description: " .. string.gsub(NewDesc, "\n", "\\n"))
+                    end
+                end
+            end
+        end
+        
+        if InspectWidget.TextBlock_ResistanceList and InspectWidget.TextBlock_ResistanceList:IsValid() then
+            local CurrentRes = InspectWidget.TextBlock_ResistanceList:GetText():ToString()
+            if CurrentRes ~= "" then
+                if DebugMode then
+                    print("[ItemTranslationMod] Inspect Screen - Raw ResistanceList: " .. string.gsub(CurrentRes, "\n", "\\n"))
+                end
+                
+                local NewRes = TranslateTextBlock(CurrentRes)
+                
+                if NewRes ~= CurrentRes then
+                    InspectWidget.TextBlock_ResistanceList:SetText(FText(NewRes))
+                    if DebugMode then
+                        print("[ItemTranslationMod] Inspect Screen - Translated ResistanceList: " .. string.gsub(NewRes, "\n", "\\n"))
+                    end
+                end
+            end
+        end
+    end)
+    print("[ItemTranslationMod] InspectItemScreen hook registered successfully!")
 end
 
 local loadedCount = LoadTranslations(CurrentLocale)
 
 if loadedCount > 0 then
-    local success = pcall(HookTooltip)
+    local success1 = pcall(HookTooltip)
+    local success2 = pcall(HookInspectScreen)
 
-    if not success then
-        print("[ItemTranslationMod] Blueprint not loaded yet. Waiting for ItemTooltip_C to be constructed...")
+    if not (success1 and success2) then
+        print("[ItemTranslationMod] Blueprints not loaded yet. Waiting for construction...")
         local isHooked = false
-        NotifyOnNewObject("/Game/Classes/GUI/New/Components/ItemTooltip.ItemTooltip_C", function(ConstructedObject)
+
+        RegisterHook("/Script/Engine.PlayerController:ClientRestart", function()
             if not isHooked then
-                print("[ItemTranslationMod] ItemTooltip_C instance constructed! Registering hook now.")
-                success = pcall(HookTooltip)
-                if success then
-                    isHooked = true
-                    print("[ItemTranslationMod] Cleaning up NotifyOnNewObject listener.")
-                    return true
-                end
+                pcall(HookTooltip)
+                pcall(HookInspectScreen)
+                isHooked = true
             end
         end)
     end

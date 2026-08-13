@@ -5,3 +5,7 @@ Language=
 
 # Set Debug to true to print item names to the console when hovering over them
 Debug=false
+
+# Set which languages you want to be able to search for in menus.
+# Options: both, translated, english
+SearchLanguage=both

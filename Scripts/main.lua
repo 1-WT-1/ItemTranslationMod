@@ -3,16 +3,18 @@ local print = function(msg)
     _print(tostring(msg) .. "\n")
 end
 
-local ModVersion = "1.1.2"
+local ModVersion = "1.2.0"
 print(string.format("[ItemTranslationMod] v%s Initializing...", ModVersion))
 
 local ItemTranslations = {}
+local SearchReplacements = {}
 local TranslationCache = {}
 local TranslationCacheSize = 0
 local MAX_CACHE_SIZE = 1000
 
 local CurrentLocale = ""
 local DebugMode = false
+local SearchLanguage = "both"
 
 local function ProcessBlockComments(line, inBlockComment)
     if inBlockComment then
@@ -70,6 +72,12 @@ local function LoadSettings()
                 elseif key == "Debug" then
                     DebugMode = (string.lower(value) == "true" or value == "1")
                     print("[ItemTranslationMod] Debug mode set to: " .. tostring(DebugMode))
+                elseif key == "SearchLanguage" then
+                    local sl = string.lower(value)
+                    if sl == "translated" or sl == "english" or sl == "both" then
+                        SearchLanguage = sl
+                    end
+                    print("[ItemTranslationMod] SearchLanguage set to: " .. tostring(SearchLanguage))
                 end
             end
         end
@@ -146,6 +154,10 @@ local function LoadTranslations(lang)
                     
                     if key and value and key ~= "" then
                         ItemTranslations[key] = value
+                        table.insert(SearchReplacements, { 
+                            eng = key:gsub("[%^%$%(%)%%%.%[%]%*%+%-%?]", "%%%1"), 
+                            loc = value 
+                        })
                         count = count + 1
                     end
                 end
@@ -347,26 +359,86 @@ local function HookInspectScreen()
     print("[ItemTranslationMod] InspectItemScreen hook registered successfully!")
 end
 
-local loadedCount = LoadTranslations(CurrentLocale)
-
-if loadedCount > 0 then
-    local success1 = pcall(HookTooltip)
-    local success2 = pcall(HookInspectScreen)
-
-    if not (success1 and success2) then
-        print("[ItemTranslationMod] Blueprints not loaded yet. Waiting for construction...")
-        local isHooked = false
-
-        RegisterHook("/Script/Engine.PlayerController:ClientRestart", function()
-            if not isHooked then
-                pcall(HookTooltip)
-                pcall(HookInspectScreen)
-                isHooked = true
+local function HookItemCardSearch()
+    print("[ItemTranslationMod] Attempting to register hook on ItemCard_C:PrepSearchString...")
+    RegisterHook("/Game/Classes/GUI/New/Components/ItemCard.ItemCard_C:PrepSearchString", function(Context)
+        local ItemCardWidget = Context:get()
+        if not ItemCardWidget or not ItemCardWidget:IsValid() then return end
+        
+        local OriginalSearchString = ItemCardWidget:GetPropertyValue("SearchString") or ItemCardWidget.SearchString
+        if type(OriginalSearchString) == "userdata" then
+            if OriginalSearchString.ToString then
+                OriginalSearchString = OriginalSearchString:ToString()
+            elseif OriginalSearchString.get then
+                OriginalSearchString = OriginalSearchString:get()
             end
-        end)
-    end
-else
-    print("[ItemTranslationMod] No translations loaded. The mod will remain inactive.")
+        end
+
+        if OriginalSearchString and type(OriginalSearchString) == "string" then
+            if DebugMode then
+                print("[ItemTranslationMod] ItemCard PrepSearchString Fired. Raw: " .. string.gsub(OriginalSearchString, "\n", "\\n"))
+            end
+            if OriginalSearchString ~= "" then
+                local TranslatedSearch = OriginalSearchString
+                for i = 1, #SearchReplacements do
+                    TranslatedSearch = TranslatedSearch:gsub(SearchReplacements[i].eng, SearchReplacements[i].loc)
+                end
+                
+                if TranslatedSearch ~= OriginalSearchString then
+                    local NewSearchString = TranslatedSearch
+                    if SearchLanguage == "both" then
+                        NewSearchString = OriginalSearchString .. "\n" .. TranslatedSearch
+                    end
+                    
+                    local success, err = pcall(function()
+                        ItemCardWidget:SetPropertyValue("SearchString", NewSearchString)
+                    end)
+                    
+                    if DebugMode then
+                        if success then
+                            print("[ItemTranslationMod] Appended Translated SearchString for ItemCard.")
+                        else
+                            print("[ItemTranslationMod] ERROR setting SearchString: " .. tostring(err))
+                        end
+                    end
+                end
+            end
+        end
+    end)
+    print("[ItemTranslationMod] ItemCardSearch hook registered successfully!")
 end
 
-print(string.format("[ItemTranslationMod] v%s loaded successfully.", ModVersion))
+local function Init()
+    local loadedCount = LoadTranslations(CurrentLocale)
+
+    if loadedCount > 0 then
+        local success1 = pcall(HookTooltip)
+        local success2 = pcall(HookInspectScreen)
+        local success3 = true
+        if SearchLanguage ~= "english" then
+            success3 = pcall(HookItemCardSearch)
+        end
+
+        if not (success1 and success2 and success3) then
+            print("[ItemTranslationMod] Blueprints not loaded yet. Waiting for construction...")
+            local isHooked = false
+
+            RegisterHook("/Script/Engine.PlayerController:ClientRestart", function()
+                if not isHooked then
+                    pcall(HookTooltip)
+                    pcall(HookInspectScreen)
+                    if SearchLanguage ~= "english" then
+                        pcall(HookItemCardSearch)
+                    end
+                    isHooked = true
+                end
+            end)
+        end
+    else
+        print("[ItemTranslationMod] No translations loaded. The mod will remain inactive.")
+    end
+
+    print(string.format("[ItemTranslationMod] v%s loaded successfully.", ModVersion))
+end
+
+Init()

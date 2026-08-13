@@ -187,7 +187,7 @@ local function TranslateTextBlock(CurrentText)
             return leading_space .. ItemTranslations[core_text] .. trailing_space
         end
         
-        local prefix, rest = core_text:match("^([%+%-]?%d+%.?%d*[x%%]?%s+)(.+)$")
+        local prefix, rest = core_text:match("^([%+%-]?%d+%.?%d*[%a%%/]*%s+)(.+)$")
         if prefix and rest then
             if ItemTranslations[rest] then
                 return leading_space .. prefix .. ItemTranslations[rest] .. trailing_space

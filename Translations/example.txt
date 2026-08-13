@@ -15,6 +15,7 @@ Consumable | Consumable (EXAMPLE)
 Regen | Regen (EXAMPLE)
 Kinetic | KINETIC (EXAMPLE)
 TIP: | TIP(EXAMPLE):
+Carry Weight Bonus | Carry Weight EXAMPLE
 
 #List of items in the game v0.4.5 (public-test) by Tea- Loving Lad
 

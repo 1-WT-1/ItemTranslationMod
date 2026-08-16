@@ -103,6 +103,21 @@ jobs:
           path: ${{ steps.info.outputs.zip_name }}
           retention-days: 5
 
+      - name: Determine Draft Status
+        id: draft_status
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.info.outputs.version }}"
+          IS_DRAFT="true"
+          if ExistingJson=$(gh release view "$VERSION" --repo "${{ github.repository }}" --json isDraft 2>/dev/null); then
+            IS_DRAFT=$(echo "$ExistingJson" | jq -r '.isDraft')
+            echo "Existing release found on GitHub. Preserving draft status: $IS_DRAFT"
+          else
+            echo "No existing release found on GitHub. Creating initial release as draft."
+          fi
+          echo "is_draft=$IS_DRAFT" >> $GITHUB_OUTPUT
+
       - name: Create or Update Release
         uses: ncipollo/release-action@v1
         with:
@@ -112,7 +127,7 @@ jobs:
           allowUpdates: ${{ inputs.force_update || github.event_name == 'push' }}
           omitBodyDuringUpdate: ${{ inputs.force_update == true }}
           removeArtifacts: true
-          draft: false
+          draft: ${{ steps.draft_status.outputs.is_draft == 'true' }}
           generateReleaseNotes: ${{ inputs.force_update != true }}
           makeLatest: true
           bodyFile: ".github/release_notes.md"

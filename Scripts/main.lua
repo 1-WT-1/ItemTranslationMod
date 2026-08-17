@@ -3,10 +3,11 @@ local print = function(msg)
     _print(tostring(msg) .. "\n")
 end
 
-local ModVersion = "1.2.1"
+local ModVersion = "1.3.0"
 print(string.format("[ItemTranslationMod] v%s Initializing...", ModVersion))
 
 local ItemTranslations = {}
+local ItemTranslationsLower = {}
 local SearchReplacements = {}
 local TranslationCache = {}
 local TranslationCacheSize = 0
@@ -102,6 +103,7 @@ local function LoadTranslations(lang)
     end
 
     ItemTranslations = {}
+    ItemTranslationsLower = {}
     SearchReplacements = {}
     local count = 0
     local delimiter = "|"
@@ -157,6 +159,7 @@ local function LoadTranslations(lang)
                     
                     if key and value and key ~= "" then
                         ItemTranslations[key] = value
+                        ItemTranslationsLower[key:lower()] = value
                         table.insert(SearchReplacements, { 
                             raw_eng = key,
                             eng = key:gsub("[%^%$%(%)%%%.%[%]%*%+%-%?]", "%%%1"), 
@@ -424,6 +427,148 @@ local function HookItemCardSearch()
     print("[ItemTranslationMod] ItemCardSearch hook registered successfully!")
 end
 
+local isSelectorHooked = false
+
+local function GetTranslation(text)
+    if not text or text == "" then return nil end
+    if ItemTranslations[text] then return ItemTranslations[text] end
+    if ItemTranslationsLower[text:lower()] then return ItemTranslationsLower[text:lower()] end
+    return nil
+end
+
+local function TranslateSelectorWidget(selector)
+    if not selector or not selector:IsValid() then return end
+    pcall(function()
+        if selector.TextBlock_Setting and selector.TextBlock_Setting:IsValid() then
+            local currentDisplayed = selector.TextBlock_Setting:GetText():ToString()
+            local rawText = nil
+
+            if selector.Settings then
+                local idx = (selector.IndexOutPut or 0) + 1
+                if selector.Settings[idx] then
+                    rawText = selector.Settings[idx]:ToString()
+                end
+            end
+
+            local candidates = {}
+            if rawText and rawText ~= "" then
+                table.insert(candidates, rawText)
+            end
+            if currentDisplayed and currentDisplayed ~= "" then
+                table.insert(candidates, currentDisplayed)
+            end
+
+            local translatedText = nil
+            for _, candidate in ipairs(candidates) do
+                local found = GetTranslation(candidate)
+                if found then
+                    translatedText = found
+                    break
+                end
+            end
+
+            if translatedText and translatedText ~= currentDisplayed then
+                local displayText = string.upper(translatedText)
+                selector.TextBlock_Setting:SetText(FText(displayText))
+                if DebugMode then
+                    print(string.format("[ItemTranslationMod] Translated Selector Value: '%s' -> '%s'", currentDisplayed, translatedText))
+                end
+            elseif DebugMode and currentDisplayed ~= "" and not translatedText then
+                print(string.format("[ItemTranslationMod] Selector skipped (no key for '%s' or '%s')", tostring(rawText), tostring(currentDisplayed)))
+            end
+        end
+    end)
+end
+
+local function TranslateAllActiveSelectors()
+    local selectors = FindAllOf("Setting_Selector_Widget_C")
+    if selectors and #selectors > 0 then
+        for _, selector in ipairs(selectors) do
+            TranslateSelectorWidget(selector)
+        end
+    end
+end
+
+local function HookCharacterEditorSelectors()
+    local function TryRegisterSelectorHooks()
+        if isSelectorHooked then return true end
+
+        local basePath = "/Game/Classes/GUI/SubWidgets/Setting_Selector_Widget.Setting_Selector_Widget_C:"
+        local nextFunc = basePath .. "BndEvt__Setting_Selector_Widget_Button_Next_K2Node_ComponentBoundEvent_0_OnButtonClickedEvent__DelegateSignature"
+        local prevFunc = basePath .. "BndEvt__Setting_Selector_Widget_Button_Prev_K2Node_ComponentBoundEvent_1_OnButtonClickedEvent__DelegateSignature"
+
+        local hookCount = 0
+
+        local ok1, err1 = pcall(function()
+            RegisterHook(nextFunc, function(Context)
+                local selector = Context:get()
+                if not selector or not selector:IsValid() then return end
+                if DebugMode then
+                    print("[ItemTranslationMod] Button_Next clicked!")
+                end
+                ExecuteWithDelay(10, function()
+                    if selector and selector:IsValid() then
+                        TranslateSelectorWidget(selector)
+                    end
+                end)
+            end)
+        end)
+        if ok1 then
+            hookCount = hookCount + 1
+            print("[ItemTranslationMod] Button_Next hook registered!")
+        elseif DebugMode then
+            print("[ItemTranslationMod] Button_Next hook failed: " .. tostring(err1))
+        end
+
+        local ok2, err2 = pcall(function()
+            RegisterHook(prevFunc, function(Context)
+                local selector = Context:get()
+                if not selector or not selector:IsValid() then return end
+                if DebugMode then
+                    print("[ItemTranslationMod] Button_Prev clicked!")
+                end
+                ExecuteWithDelay(10, function()
+                    if selector and selector:IsValid() then
+                        TranslateSelectorWidget(selector)
+                    end
+                end)
+            end)
+        end)
+        if ok2 then
+            hookCount = hookCount + 1
+            print("[ItemTranslationMod] Button_Prev hook registered!")
+        elseif DebugMode then
+            print("[ItemTranslationMod] Button_Prev hook failed: " .. tostring(err2))
+        end
+
+        if hookCount > 0 then
+            isSelectorHooked = true
+        end
+        return hookCount > 0
+    end
+
+    pcall(function()
+        NotifyOnNewObject("/Script/UMG.UserWidget", function(Widget)
+            if not Widget or not Widget:IsValid() then return end
+            local fullName = Widget:GetFullName()
+            if fullName and fullName:find("^Character_Editor_Widget_C") then
+                if DebugMode then
+                    print("[ItemTranslationMod] Character_Editor_Widget_C constructed. Translating selector values...")
+                end
+                
+                TryRegisterSelectorHooks()
+
+                ExecuteWithDelay(300, function()
+                    TranslateAllActiveSelectors()
+                end)
+                ExecuteWithDelay(800, function()
+                    TranslateAllActiveSelectors()
+                end)
+            end
+        end)
+    end)
+end
+
 local function Init()
     local loadedCount = LoadTranslations(CurrentLocale)
 
@@ -434,8 +579,9 @@ local function Init()
         if SearchLanguage ~= "english" then
             success3 = pcall(HookItemCardSearch)
         end
+        local success4 = pcall(HookCharacterEditorSelectors)
 
-        if not (success1 and success2 and success3) then
+        if not (success1 and success2 and success3 and success4) then
             print("[ItemTranslationMod] Blueprints not loaded yet. Waiting for construction...")
             local isHooked = false
 
@@ -446,6 +592,7 @@ local function Init()
                     if SearchLanguage ~= "english" then
                         pcall(HookItemCardSearch)
                     end
+                    pcall(HookCharacterEditorSelectors)
                     isHooked = true
                 end
             end)

@@ -17,6 +17,25 @@ Kinetic | KINETIC (EXAMPLE)
 TIP: | TIP(EXAMPLE):
 Carry Weight Bonus | Carry Weight EXAMPLE
 
+--Character Creator Selector Options
+NONE | NONE (EXAMPLE)
+Mute | Mute (EXAMPLE)
+Face 1 | Face 1 (EXAMPLE)
+TYPE 1 | TYPE 1 (EXAMPLE)
+Feathers 1 | Feathers 1 (EXAMPLE)
+Clear | Clear (EXAMPLE)
+Body 1 | Body 1 (EXAMPLE)
+Normal Tail | Normal Tail (EXAMPLE)
+Docked Tail | Docked Tail (EXAMPLE)
+Cautious | Cautious (EXAMPLE)
+Fem_01 | Fem_01 (EXAMPLE)
+Masc_01 | Masc_01 (EXAMPLE)
+Fem_02 | Fem_02 (EXAMPLE)
+Masc_02 | Masc_02 (EXAMPLE)
+Freelancer | Freelancer (EXAMPLE)
+Red Star | Red Star (EXAMPLE)
+
+
 #List of items in the game v0.4.5 (public-test) by Tea- Loving Lad
 
 --Medical Items

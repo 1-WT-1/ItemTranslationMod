@@ -3,7 +3,7 @@ local print = function(msg)
     _print(tostring(msg) .. "\n")
 end
 
-local ModVersion = "1.3.0"
+local ModVersion = "1.4.0"
 print(string.format("[ItemTranslationMod] v%s Initializing...", ModVersion))
 
 local ItemTranslations = {}
@@ -558,11 +558,128 @@ local function HookCharacterEditorSelectors()
                 
                 TryRegisterSelectorHooks()
 
-                ExecuteWithDelay(300, function()
+                ExecuteWithDelay(100, function()
                     TranslateAllActiveSelectors()
                 end)
-                ExecuteWithDelay(800, function()
-                    TranslateAllActiveSelectors()
+            end
+        end)
+    end)
+end
+
+local isSettingsHooked = false
+
+local function TranslateAllControlLabels()
+    local rebindWidgets = FindAllOf("KeyRebind_Widget_C")
+    if rebindWidgets and #rebindWidgets > 0 then
+        for _, rw in ipairs(rebindWidgets) do
+            if rw and rw:IsValid() then
+                pcall(function()
+                    if rw.TextBlock_Name and rw.TextBlock_Name:IsValid() then
+                        local currentDisplayed = rw.TextBlock_Name:GetText():ToString()
+                        if currentDisplayed and currentDisplayed ~= "" and not currentDisplayed:find("^FString:") then
+                            local translated = GetTranslation(currentDisplayed)
+                            if not translated and currentDisplayed:sub(-1) == ":" then
+                                local noColon = currentDisplayed:sub(1, -2)
+                                local tNoColon = GetTranslation(noColon)
+                                if tNoColon then
+                                    translated = tNoColon .. ":"
+                                end
+                            end
+
+                            if translated and translated ~= currentDisplayed then
+                                rw.TextBlock_Name:SetText(FText(string.upper(translated)))
+                                if DebugMode then
+                                    print(string.format("[ItemTranslationMod] Translated Control Label: '%s' -> '%s'", currentDisplayed, string.upper(translated)))
+                                end
+                            end
+                        end
+                    end
+                end)
+            end
+        end
+    end
+
+    local moveWidgets = FindAllOf("KeyRebind_Movement_Widget_C")
+    if moveWidgets and #moveWidgets > 0 then
+        for _, mw in ipairs(moveWidgets) do
+            if mw and mw:IsValid() then
+                for _, tbName in ipairs({"TextBlock_Name", "TextBlock_Name_1", "TextBlock_Name_2", "TextBlock_Name_3", "TextBlock_Name_4"}) do
+                    pcall(function()
+                        local tb = mw[tbName]
+                        if tb and tb:IsValid() then
+                            local currentDisplayed = tb:GetText():ToString()
+                            if currentDisplayed and currentDisplayed ~= "" and not currentDisplayed:find("^FString:") then
+                                local translated = GetTranslation(currentDisplayed)
+                                if not translated and currentDisplayed:sub(-1) == ":" then
+                                    local noColon = currentDisplayed:sub(1, -2)
+                                    local tNoColon = GetTranslation(noColon)
+                                    if tNoColon then
+                                        translated = tNoColon .. ":"
+                                    end
+                                end
+                                if translated and translated ~= currentDisplayed then
+                                    tb:SetText(FText(string.upper(translated)))
+                                    if DebugMode then
+                                        print(string.format("[ItemTranslationMod] Translated Movement Label: '%s' -> '%s'", currentDisplayed, string.upper(translated)))
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                end
+            end
+        end
+    end
+end
+
+local function HookSettingsControlLabels()
+    local function TryRegisterSettingsHooks()
+        if isSettingsHooked then return true end
+
+        local tabFunc = "/Game/Classes/GUI/Menu_Settings_Widget.Menu_Settings_Widget_C:BndEvt__Menu_Settings_Widget_Button_Mode_KeyBinds_K2Node_ComponentBoundEvent_33_Pressed__DelegateSignature"
+        local defFunc = "/Game/Classes/GUI/Menu_Settings_Widget.Menu_Settings_Widget_C:BndEvt__Menu_Settings_Widget_Button_Defaults_K2Node_ComponentBoundEvent_13_Pressed__DelegateSignature"
+
+        local count = 0
+        pcall(function()
+            RegisterHook(tabFunc, function()
+                ExecuteWithDelay(100, function()
+                    TranslateAllControlLabels()
+                end)
+            end)
+            count = count + 1
+        end)
+
+        pcall(function()
+            RegisterHook(defFunc, function()
+                ExecuteWithDelay(100, function()
+                    TranslateAllControlLabels()
+                end)
+            end)
+            count = count + 1
+        end)
+
+        if count > 0 then
+            isSettingsHooked = true
+            if DebugMode then
+                print("[ItemTranslationMod] Settings KeyBinds hooks registered successfully!")
+            end
+        end
+        return isSettingsHooked
+    end
+
+    pcall(function()
+        NotifyOnNewObject("/Script/UMG.UserWidget", function(Widget)
+            if not Widget or not Widget:IsValid() then return end
+            local fullName = Widget:GetFullName()
+            if fullName and fullName:find("^Menu_Settings_Widget_C") then
+                if DebugMode then
+                    print("[ItemTranslationMod] Menu_Settings_Widget_C constructed. Translating control labels...")
+                end
+
+                TryRegisterSettingsHooks()
+
+                ExecuteWithDelay(100, function()
+                    TranslateAllControlLabels()
                 end)
             end
         end)
@@ -580,8 +697,9 @@ local function Init()
             success3 = pcall(HookItemCardSearch)
         end
         local success4 = pcall(HookCharacterEditorSelectors)
+        local success5 = pcall(HookSettingsControlLabels)
 
-        if not (success1 and success2 and success3 and success4) then
+        if not (success1 and success2 and success3 and success4 and success5) then
             print("[ItemTranslationMod] Blueprints not loaded yet. Waiting for construction...")
             local isHooked = false
 
@@ -593,6 +711,7 @@ local function Init()
                         pcall(HookItemCardSearch)
                     end
                     pcall(HookCharacterEditorSelectors)
+                    pcall(HookSettingsControlLabels)
                     isHooked = true
                 end
             end)
